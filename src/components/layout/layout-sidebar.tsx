@@ -118,30 +118,80 @@ export const LayoutSidebar = (props: LayoutSidebarProps) => {
 
   return (
     <div className="layout-content__left">
-      {/* Logo */}
-      <div className="the-logo" data-tauri-drag-region="false">
+      {/* Logo: Marxism VPN */}
+      <div
+        className="the-logo"
+        data-tauri-drag-region="false"
+        style={{
+          flex: '0 0 auto',
+          padding: isCollapsed ? '16px 4px 10px' : '16px 12px 12px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
+        }}
+      >
         <div
           data-tauri-drag-region="true"
           style={{
-            height: '27px',
             display: 'flex',
-            justifyContent: 'space-between',
+            flexDirection: 'column',
+            alignItems: 'center',
+            width: '100%',
           }}
         >
-          <SvgIcon
-            component={isDark ? iconDark : iconLight}
+          <img
+            src="/src/assets/image/marxism-mark.svg"
+            alt="Marxism VPN"
             style={{
-              height: '36px',
-              width: '36px',
-              marginTop: '-3px',
-              marginRight: '5px',
-              marginLeft: '-3px',
+              width: isCollapsed ? '34px' : '52px',
+              height: isCollapsed ? '34px' : '52px',
+              filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.35))',
             }}
-            inheritViewBox
           />
-          <LogoSvg fill={isDark ? 'white' : 'black'} />
+          {!isCollapsed && (
+            <>
+              <div
+                style={{
+                  marginTop: '10px',
+                  fontSize: '18px',
+                  fontWeight: 800,
+                  color: '#FFFFFF',
+                  letterSpacing: '1px',
+                  textShadow: '0 1px 3px rgba(0, 0, 0, 0.4)',
+                }}
+              >
+                马克思主义VPN
+              </div>
+              <div
+                style={{
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  color: 'rgba(247, 244, 238, 0.85)',
+                  letterSpacing: '0.8px',
+                }}
+              >
+                Marxism VPN
+              </div>
+              <div
+                style={{
+                  marginTop: '8px',
+                  fontSize: '11px',
+                  fontWeight: 500,
+                  color: '#FFD700',
+                  letterSpacing: '0.5px',
+                  opacity: 0.95,
+                  padding: '2px 8px',
+                  borderRadius: '10px',
+                  backgroundColor: 'rgba(0, 0, 0, 0.15)',
+                }}
+              >
+                全世界无产者，联合起来！
+              </div>
+            </>
+          )}
         </div>
-        <UpdateButton className="the-newbtn" />
       </div>
 
       {/* Edit navigation menu badge */}
@@ -217,10 +267,51 @@ export const LayoutSidebar = (props: LayoutSidebarProps) => {
         </MenuItem>
       </Menu>
 
-      {/* Traffic */}
-      <div className="the-traffic">
+      {/* Traffic & Bottom Quote */}
+      <div className="the-traffic" style={{ flex: '0 0 auto' }}>
         <LayoutTraffic />
       </div>
+
+      {/* Marx Quote & Great Leaders Watermark */}
+      {!isCollapsed && (
+        <div
+          style={{
+            position: 'relative',
+            marginTop: 'auto',
+            padding: '16px 16px 20px',
+            fontSize: '11px',
+            color: 'rgba(247, 244, 238, 0.85)',
+            lineHeight: 1.6,
+            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+            overflow: 'hidden',
+          }}
+        >
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '-10px',
+              left: 0,
+              right: 0,
+              height: '130px',
+              backgroundImage: 'url(/src/assets/image/portraits.svg)',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'bottom center',
+              backgroundSize: '180px auto',
+              opacity: 0.12,
+              pointerEvents: 'none',
+              filter: 'contrast(1.5)',
+            }}
+          />
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <p style={{ margin: '0 0 6px', fontWeight: 500, fontStyle: 'italic', letterSpacing: '0.3px' }}>
+              “哲学家们只是用不同的方式解释世界，问题在于改变世界。”
+            </p>
+            <p style={{ margin: 0, textAlign: 'right', color: '#FFD700', fontSize: '10.5px', fontWeight: 600 }}>
+              —— 卡尔·马克思
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
