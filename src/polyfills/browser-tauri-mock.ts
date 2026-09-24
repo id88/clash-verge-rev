@@ -21,7 +21,7 @@ if (typeof window !== 'undefined') {
         webviews: [{ label: 'main' }],
       },
 
-      invoke: async (cmd: string, args?: any) => {
+      invoke: async (cmd: string, _args?: any) => {
         // Return sensible defaults for frontend display in browser preview
         switch (cmd) {
           case 'get_verge_config':

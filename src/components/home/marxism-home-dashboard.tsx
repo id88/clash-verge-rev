@@ -34,15 +34,16 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
   const [isToggling, setIsToggling] = useState(false)
 
   useEffect(() => {
-    let interval: any
-    if (isConnected) {
-      interval = setInterval(() => {
-        setSeconds((prev) => prev + 1)
-      }, 1000)
-    } else {
+    if (!isConnected) {
+      return
+    }
+    const interval = setInterval(() => {
+      setSeconds((prev) => prev + 1)
+    }, 1000)
+    return () => {
+      clearInterval(interval)
       setSeconds(0)
     }
-    return () => clearInterval(interval)
   }, [isConnected])
 
   const formatTimer = (totalSec: number) => {
@@ -83,7 +84,7 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
           borderRadius: 2,
         }}
       >
-        <Stack direction="row" spacing={1.5} alignItems="center">
+        <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
           <CampaignRounded sx={{ color: '#C8102E', fontSize: 22 }} />
           <Typography
             variant="body2"
@@ -305,7 +306,7 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
                 },
               }}
             >
-              <Stack direction="row" spacing={1.2} alignItems="center">
+              <Stack direction="row" spacing={1.2} sx={{ alignItems: 'center' }}>
                 <MenuBookRounded sx={{ color: '#C8102E', fontSize: 22 }} />
                 <Box>
                   <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937', fontSize: '13px' }}>
@@ -337,7 +338,7 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
                 },
               }}
             >
-              <Stack direction="row" spacing={1.2} alignItems="center">
+              <Stack direction="row" spacing={1.2} sx={{ alignItems: 'center' }}>
                 <AutoStoriesRounded sx={{ color: '#C8102E', fontSize: 22 }} />
                 <Box>
                   <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937', fontSize: '13px' }}>
@@ -369,7 +370,7 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
                 },
               }}
             >
-              <Stack direction="row" spacing={1.2} alignItems="center">
+              <Stack direction="row" spacing={1.2} sx={{ alignItems: 'center' }}>
                 <StarRounded sx={{ color: '#FFD700', fontSize: 22 }} />
                 <Box>
                   <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937', fontSize: '13px' }}>
@@ -401,7 +402,7 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
                 },
               }}
             >
-              <Stack direction="row" spacing={1.2} alignItems="center">
+              <Stack direction="row" spacing={1.2} sx={{ alignItems: 'center' }}>
                 <ForumRounded sx={{ color: '#C8102E', fontSize: 22 }} />
                 <Box>
                   <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937', fontSize: '13px' }}>
@@ -430,7 +431,7 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
           fontSize: '12px',
         }}
       >
-        <Stack direction="row" spacing={1} alignItems="center">
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
           <SecurityRounded sx={{ fontSize: 16, color: '#C8102E' }} />
           <Typography variant="caption" sx={{ color: '#6B7280', fontWeight: 500 }}>
             马克思主义VPN保护您的网络自由与思想安全
