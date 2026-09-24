@@ -3,39 +3,34 @@ import {
   SecurityRounded,
   LockRounded,
   HubRounded,
-  SignalCellularAltRounded,
   MenuBookRounded,
   AutoStoriesRounded,
   StarRounded,
   ForumRounded,
   ChevronRightRounded,
-  CheckCircleRounded,
 } from '@mui/icons-material'
 import {
   Box,
   Button,
-  Card,
-  CardContent,
   Grid,
-  IconButton,
   Paper,
   Stack,
   Typography,
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
 
 import { useSystemProxyState } from '@/hooks/use-system-proxy-state'
-import { useVerge } from '@/hooks/use-verge'
 import { showNotice } from '@/services/notice-service'
 
-export const MarxismHomeDashboard: React.FC = () => {
-  const navigate = useNavigate()
-  const { indicator: isConnected, toggleSystemProxy } = useSystemProxyState()
-  const { verge } = useVerge()
+interface MarxismHomeDashboardProps {
+  children?: React.ReactNode
+}
 
-  // Connection timer simulation
-  const [seconds, setSeconds] = useState(156) // default ~00:02:36
+export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ children }) => {
+  const { indicator: isConnected, toggleSystemProxy } = useSystemProxyState()
+
+  // Live timer for connection
+  const [seconds, setSeconds] = useState(0)
   const [isToggling, setIsToggling] = useState(false)
 
   useEffect(() => {
@@ -62,7 +57,7 @@ export const MarxismHomeDashboard: React.FC = () => {
     try {
       await toggleSystemProxy(!isConnected)
       showNotice.success(
-        !isConnected ? '已成功接入马克思主义网络' : '已断开马克思主义VPN连接',
+        !isConnected ? '已成功接入马克思主义安全网络' : '已断开系统代理连接',
       )
     } catch (err: any) {
       showNotice.error(err?.message || '操作失败')
@@ -72,7 +67,7 @@ export const MarxismHomeDashboard: React.FC = () => {
   }
 
   return (
-    <Box sx={{ maxWidth: 840, mx: 'auto', p: { xs: 1.5, md: 2.5 } }}>
+    <Box sx={{ width: '100%', maxWidth: 960, mx: 'auto' }}>
       {/* 1. 顶部公告横幅 */}
       <Paper
         elevation={0}
@@ -81,8 +76,8 @@ export const MarxismHomeDashboard: React.FC = () => {
           alignItems: 'center',
           justifyContent: 'space-between',
           px: 2,
-          py: 1.25,
-          mb: 2.5,
+          py: 1.2,
+          mb: 2,
           bgcolor: '#FFF1F0',
           border: '1px solid #FFA39E',
           borderRadius: 2,
@@ -119,7 +114,7 @@ export const MarxismHomeDashboard: React.FC = () => {
       <Paper
         elevation={0}
         sx={{
-          p: { xs: 3, md: 4 },
+          p: { xs: 2.5, md: 3.5 },
           mb: 2.5,
           bgcolor: '#FFFFFF',
           border: '1px solid #E5E7EB',
@@ -134,14 +129,14 @@ export const MarxismHomeDashboard: React.FC = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            my: 2,
+            my: 1.5,
           }}
         >
           <Box
             sx={{
               position: 'relative',
-              width: 170,
-              height: 170,
+              width: 150,
+              height: 150,
               borderRadius: '50%',
               display: 'flex',
               alignItems: 'center',
@@ -149,9 +144,9 @@ export const MarxismHomeDashboard: React.FC = () => {
               background: isConnected
                 ? 'radial-gradient(circle, rgba(200,16,46,0.06) 0%, rgba(200,16,46,0.18) 100%)'
                 : 'radial-gradient(circle, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.06) 100%)',
-              border: isConnected ? '8px solid #C8102E' : '8px solid #D1D5DB',
+              border: isConnected ? '7px solid #C8102E' : '7px solid #D1D5DB',
               boxShadow: isConnected
-                ? '0 0 35px rgba(200, 16, 46, 0.28), inset 0 0 15px rgba(200, 16, 46, 0.15)'
+                ? '0 0 30px rgba(200, 16, 46, 0.25), inset 0 0 12px rgba(200, 16, 46, 0.12)'
                 : 'none',
               transition: 'all 0.4s ease-in-out',
             }}
@@ -161,11 +156,11 @@ export const MarxismHomeDashboard: React.FC = () => {
               src="/src/assets/image/soviet-hammer-and-sickle.svg"
               alt="Soviet Hammer and Sickle"
               sx={{
-                width: 90,
-                height: 90,
+                width: 80,
+                height: 80,
                 filter: isConnected
                   ? 'drop-shadow(0 4px 10px rgba(200, 16, 46, 0.4))'
-                  : 'grayscale(100%) opacity(0.4)',
+                  : 'grayscale(100%) opacity(0.35)',
                 transition: 'all 0.3s ease',
               }}
             />
@@ -179,8 +174,8 @@ export const MarxismHomeDashboard: React.FC = () => {
             fontWeight: 800,
             color: isConnected ? '#C8102E' : '#6B7280',
             letterSpacing: 1,
-            mt: 2,
-            mb: 0.8,
+            mt: 1.5,
+            mb: 0.5,
           }}
         >
           {isConnected ? '已连接' : '未连接'}
@@ -189,7 +184,7 @@ export const MarxismHomeDashboard: React.FC = () => {
         <Typography variant="body2" sx={{ color: '#6B7280', mb: 1 }}>
           {isConnected
             ? '您已通过马克思主义VPN安全连接'
-            : '点击下方按钮接入马克思主义安全网络'}
+            : '点击下方按钮一键接入安全网络'}
         </Typography>
 
         <Typography
@@ -199,7 +194,7 @@ export const MarxismHomeDashboard: React.FC = () => {
             fontWeight: 700,
             color: '#1F2937',
             letterSpacing: 2,
-            mb: 3,
+            mb: 2.5,
           }}
         >
           {formatTimer(seconds)}
@@ -213,9 +208,9 @@ export const MarxismHomeDashboard: React.FC = () => {
           onClick={handleToggleConnection}
           sx={{
             width: '100%',
-            maxWidth: 360,
-            py: 1.4,
-            fontSize: '16px',
+            maxWidth: 340,
+            py: 1.3,
+            fontSize: '15px',
             fontWeight: 700,
             letterSpacing: 1,
             borderRadius: 2,
@@ -233,359 +228,74 @@ export const MarxismHomeDashboard: React.FC = () => {
               ? '断开连接'
               : '立即连接'}
         </Button>
-      </Paper>
 
-      {/* 3. 三联规格指标小卡片 */}
-      <Grid container spacing={2} sx={{ mb: 2.5 }}>
-        <Grid size={{ xs: 12, sm: 4 }}>
-          <Paper
-            elevation={0}
-            sx={{
-              p: 2,
-              bgcolor: '#FFFFFF',
-              border: '1px solid #E5E7EB',
-              borderRadius: 2.5,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1.5,
-            }}
-          >
-            <Box
-              sx={{
-                p: 1.2,
-                borderRadius: 2,
-                bgcolor: 'rgba(200, 16, 46, 0.08)',
-                color: '#C8102E',
-                display: 'flex',
-              }}
-            >
-              <SecurityRounded fontSize="small" />
-            </Box>
-            <Box>
-              <Typography variant="caption" sx={{ color: '#6B7280' }}>
-                连接协议
-              </Typography>
-              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937' }}>
-                Marxism Protocol
-              </Typography>
-              <Typography variant="caption" sx={{ color: '#16A34A', display: 'block' }}>
-                安全可靠
-              </Typography>
-            </Box>
-          </Paper>
-        </Grid>
-
-        <Grid size={{ xs: 12, sm: 4 }}>
-          <Paper
-            elevation={0}
-            sx={{
-              p: 2,
-              bgcolor: '#FFFFFF',
-              border: '1px solid #E5E7EB',
-              borderRadius: 2.5,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1.5,
-            }}
-          >
-            <Box
-              sx={{
-                p: 1.2,
-                borderRadius: 2,
-                bgcolor: 'rgba(200, 16, 46, 0.08)',
-                color: '#C8102E',
-                display: 'flex',
-              }}
-            >
-              <LockRounded fontSize="small" />
-            </Box>
-            <Box>
-              <Typography variant="caption" sx={{ color: '#6B7280' }}>
-                加密级别
-              </Typography>
-              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937' }}>
-                AES-256
-              </Typography>
-              <Typography variant="caption" sx={{ color: '#16A34A', display: 'block' }}>
-                最高级别
-              </Typography>
-            </Box>
-          </Paper>
-        </Grid>
-
-        <Grid size={{ xs: 12, sm: 4 }}>
-          <Paper
-            elevation={0}
-            sx={{
-              p: 2,
-              bgcolor: '#FFFFFF',
-              border: '1px solid #E5E7EB',
-              borderRadius: 2.5,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1.5,
-            }}
-          >
-            <Box
-              sx={{
-                p: 1.2,
-                borderRadius: 2,
-                bgcolor: 'rgba(200, 16, 46, 0.08)',
-                color: '#C8102E',
-                display: 'flex',
-              }}
-            >
-              <HubRounded fontSize="small" />
-            </Box>
-            <Box>
-              <Typography variant="caption" sx={{ color: '#6B7280' }}>
-                连接模式
-              </Typography>
-              <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937' }}>
-                智能模式
-              </Typography>
-              <Typography variant="caption" sx={{ color: '#6B7280', display: 'block' }}>
-                自动选择最优线路
-              </Typography>
-            </Box>
-          </Paper>
-        </Grid>
-      </Grid>
-
-      {/* 4. 当前服务器卡片 (带世界地图背景点缀) */}
-      <Box sx={{ mb: 2.5 }}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            mb: 1.5,
-            px: 0.5,
-          }}
-        >
-          <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#1F2937' }}>
-            当前服务器
-          </Typography>
-          <Button
-            size="small"
-            endIcon={<ChevronRightRounded sx={{ fontSize: 16 }} />}
-            onClick={() => navigate('/proxies')}
-            sx={{
-              color: '#8B1018',
-              fontSize: '13px',
-              fontWeight: 600,
-              textTransform: 'none',
-            }}
-          >
-            更换服务器
-          </Button>
-        </Box>
-
-        <Paper
-          elevation={0}
-          sx={{
-            p: 2.5,
-            bgcolor: '#FFFFFF',
-            border: '1px solid #E5E7EB',
-            borderRadius: 3,
-            position: 'relative',
-            overflow: 'hidden',
-          }}
-        >
-          {/* 服务器条目详情 */}
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              p: 1.8,
-              bgcolor: '#F9FAFB',
-              borderRadius: 2,
-              border: '1px solid #F3F4F6',
-              mb: 2.5,
-              position: 'relative',
-              zIndex: 2,
-            }}
-          >
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Box
-                sx={{
-                  width: 38,
-                  height: 26,
-                  bgcolor: '#C8102E',
-                  borderRadius: 0.5,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.15)',
-                }}
-              >
-                <Box
-                  component="img"
-                  src="/src/assets/image/soviet-hammer-and-sickle.svg"
-                  sx={{ width: 18, height: 18 }}
-                />
-              </Box>
-              <Box>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  <Typography variant="subtitle2" sx={{ fontWeight: 800, color: '#1F2937' }}>
-                    中国 · 北京
-                  </Typography>
-                  <Box
-                    sx={{
-                      px: 0.8,
-                      py: 0.2,
-                      fontSize: '11px',
-                      fontWeight: 700,
-                      borderRadius: 1,
-                      bgcolor: 'rgba(200, 16, 46, 0.1)',
-                      color: '#C8102E',
-                    }}
-                  >
-                    推荐
-                  </Box>
-                </Stack>
-                <Typography variant="caption" sx={{ color: '#6B7280' }}>
-                  延迟 28ms &nbsp;|&nbsp; 负载 23%
+        {/* 三联指标卡片嵌入 */}
+        <Grid container spacing={2} sx={{ mt: 2.5, pt: 2, borderTop: '1px solid #F3F4F6' }}>
+          <Grid size={{ xs: 12, sm: 4 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.2 }}>
+              <SecurityRounded sx={{ color: '#C8102E', fontSize: 20 }} />
+              <Box sx={{ textAlign: 'left' }}>
+                <Typography variant="caption" sx={{ color: '#6B7280', display: 'block', fontSize: '11px' }}>
+                  连接协议
+                </Typography>
+                <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937', fontSize: '12.5px' }}>
+                  Marxism Protocol
                 </Typography>
               </Box>
-            </Stack>
+            </Box>
+          </Grid>
 
-            <Stack direction="row" spacing={1} alignItems="center">
-              <SignalCellularAltRounded sx={{ color: '#16A34A', fontSize: 24 }} />
-              <ChevronRightRounded sx={{ color: '#9CA3AF' }} />
-            </Stack>
-          </Box>
-
-          {/* 世界地图与红点雷达脉冲点缀 */}
-          <Box
-            sx={{
-              position: 'relative',
-              height: 140,
-              width: '100%',
-              bgcolor: '#FAFAFA',
-              borderRadius: 2,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              overflow: 'hidden',
-            }}
-          >
-            {/* 抽象地图网格与大陆背景 */}
-            <Box
-              sx={{
-                position: 'absolute',
-                inset: 0,
-                opacity: 0.15,
-                backgroundImage:
-                  'radial-gradient(#9CA3AF 1px, transparent 1px), radial-gradient(#9CA3AF 1px, #FAFAFA 1px)',
-                backgroundSize: '20px 20px',
-              }}
-            />
-
-            {/* 北京核心节点脉冲星 */}
-            <Box
-              sx={{
-                position: 'absolute',
-                right: '25%',
-                top: '40%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Box
-                sx={{
-                  position: 'absolute',
-                  width: 36,
-                  height: 36,
-                  borderRadius: '50%',
-                  bgcolor: 'rgba(200, 16, 46, 0.2)',
-                  animation: 'pulse 2s infinite',
-                  '@keyframes pulse': {
-                    '0%': { transform: 'scale(0.8)', opacity: 0.8 },
-                    '100%': { transform: 'scale(2.2)', opacity: 0 },
-                  },
-                }}
-              />
-              <Box
-                sx={{
-                  width: 22,
-                  height: 22,
-                  borderRadius: '50%',
-                  bgcolor: '#C8102E',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: '0 0 10px #C8102E',
-                  zIndex: 2,
-                }}
-              >
-                <Box
-                  component="img"
-                  src="/src/assets/image/soviet-hammer-and-sickle.svg"
-                  sx={{ width: 12, height: 12 }}
-                />
+          <Grid size={{ xs: 12, sm: 4 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.2 }}>
+              <LockRounded sx={{ color: '#C8102E', fontSize: 20 }} />
+              <Box sx={{ textAlign: 'left' }}>
+                <Typography variant="caption" sx={{ color: '#6B7280', display: 'block', fontSize: '11px' }}>
+                  加密级别
+                </Typography>
+                <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937', fontSize: '12.5px' }}>
+                  AES-256 (最高级别)
+                </Typography>
               </Box>
             </Box>
+          </Grid>
 
-            {/* 辅助连线节点 */}
-            <Box
-              sx={{
-                position: 'absolute',
-                left: '20%',
-                top: '45%',
-                width: 6,
-                height: 6,
-                borderRadius: '50%',
-                bgcolor: '#C8102E',
-                opacity: 0.7,
-              }}
-            />
-            <Box
-              sx={{
-                position: 'absolute',
-                left: '52%',
-                top: '35%',
-                width: 6,
-                height: 6,
-                borderRadius: '50%',
-                bgcolor: '#C8102E',
-                opacity: 0.7,
-              }}
-            />
-            <Box
-              sx={{
-                position: 'absolute',
-                left: '42%',
-                top: '70%',
-                width: 6,
-                height: 6,
-                borderRadius: '50%',
-                bgcolor: '#C8102E',
-                opacity: 0.7,
-              }}
-            />
-          </Box>
-        </Paper>
+          <Grid size={{ xs: 12, sm: 4 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.2 }}>
+              <HubRounded sx={{ color: '#C8102E', fontSize: 20 }} />
+              <Box sx={{ textAlign: 'left' }}>
+                <Typography variant="caption" sx={{ color: '#6B7280', display: 'block', fontSize: '11px' }}>
+                  连接模式
+                </Typography>
+                <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937', fontSize: '12.5px' }}>
+                  智能模式 (自动选优)
+                </Typography>
+              </Box>
+            </Box>
+          </Grid>
+        </Grid>
+      </Paper>
+
+      {/* 3. 原版完整功能模块卡片区域 (100% 保留全部原有功能卡片与设置) */}
+      <Box sx={{ mb: 2.5 }}>
+        {children}
       </Box>
 
-      {/* 5. 快捷工具 */}
+      {/* 4. 快捷工具栏 */}
       <Box sx={{ mb: 3 }}>
-        <Typography variant="subtitle1" sx={{ fontWeight: 800, color: '#1F2937', mb: 1.5, px: 0.5 }}>
+        <Typography variant="subtitle2" sx={{ fontWeight: 800, color: '#1F2937', mb: 1.5, px: 0.5 }}>
           快捷工具
         </Typography>
 
-        <Grid container spacing={2}>
+        <Grid container spacing={1.5}>
           <Grid size={{ xs: 6, sm: 3 }}>
             <Paper
               elevation={0}
               onClick={() => showNotice.info('正在载入马克思主义基础理论学习平台...')}
               sx={{
-                p: 2,
+                p: 1.8,
                 bgcolor: '#FFFFFF',
                 border: '1px solid #E5E7EB',
-                borderRadius: 2.5,
+                borderRadius: 2,
                 cursor: 'pointer',
                 transition: 'all 0.2s',
                 '&:hover': {
@@ -595,10 +305,10 @@ export const MarxismHomeDashboard: React.FC = () => {
                 },
               }}
             >
-              <Stack direction="row" spacing={1.5} alignItems="center">
-                <MenuBookRounded sx={{ color: '#C8102E', fontSize: 24 }} />
+              <Stack direction="row" spacing={1.2} alignItems="center">
+                <MenuBookRounded sx={{ color: '#C8102E', fontSize: 22 }} />
                 <Box>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937' }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937', fontSize: '13px' }}>
                     理论学习
                   </Typography>
                   <Typography variant="caption" sx={{ color: '#6B7280', fontSize: '11px' }}>
@@ -614,10 +324,10 @@ export const MarxismHomeDashboard: React.FC = () => {
               elevation={0}
               onClick={() => showNotice.info('正在载入《资本论》《共产党宣言》等重要文献库...')}
               sx={{
-                p: 2,
+                p: 1.8,
                 bgcolor: '#FFFFFF',
                 border: '1px solid #E5E7EB',
-                borderRadius: 2.5,
+                borderRadius: 2,
                 cursor: 'pointer',
                 transition: 'all 0.2s',
                 '&:hover': {
@@ -627,10 +337,10 @@ export const MarxismHomeDashboard: React.FC = () => {
                 },
               }}
             >
-              <Stack direction="row" spacing={1.5} alignItems="center">
-                <AutoStoriesRounded sx={{ color: '#C8102E', fontSize: 24 }} />
+              <Stack direction="row" spacing={1.2} alignItems="center">
+                <AutoStoriesRounded sx={{ color: '#C8102E', fontSize: 22 }} />
                 <Box>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937' }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937', fontSize: '13px' }}>
                     重要文献
                   </Typography>
                   <Typography variant="caption" sx={{ color: '#6B7280', fontSize: '11px' }}>
@@ -646,10 +356,10 @@ export const MarxismHomeDashboard: React.FC = () => {
               elevation={0}
               onClick={() => showNotice.info('正在更新时政要闻专线...')}
               sx={{
-                p: 2,
+                p: 1.8,
                 bgcolor: '#FFFFFF',
                 border: '1px solid #E5E7EB',
-                borderRadius: 2.5,
+                borderRadius: 2,
                 cursor: 'pointer',
                 transition: 'all 0.2s',
                 '&:hover': {
@@ -659,10 +369,10 @@ export const MarxismHomeDashboard: React.FC = () => {
                 },
               }}
             >
-              <Stack direction="row" spacing={1.5} alignItems="center">
-                <StarRounded sx={{ color: '#FFD700', fontSize: 24 }} />
+              <Stack direction="row" spacing={1.2} alignItems="center">
+                <StarRounded sx={{ color: '#FFD700', fontSize: 22 }} />
                 <Box>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937' }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937', fontSize: '13px' }}>
                     时政要闻
                   </Typography>
                   <Typography variant="caption" sx={{ color: '#6B7280', fontSize: '11px' }}>
@@ -678,10 +388,10 @@ export const MarxismHomeDashboard: React.FC = () => {
               elevation={0}
               onClick={() => showNotice.info('正在连接思想交流社区...')}
               sx={{
-                p: 2,
+                p: 1.8,
                 bgcolor: '#FFFFFF',
                 border: '1px solid #E5E7EB',
-                borderRadius: 2.5,
+                borderRadius: 2,
                 cursor: 'pointer',
                 transition: 'all 0.2s',
                 '&:hover': {
@@ -691,10 +401,10 @@ export const MarxismHomeDashboard: React.FC = () => {
                 },
               }}
             >
-              <Stack direction="row" spacing={1.5} alignItems="center">
-                <ForumRounded sx={{ color: '#C8102E', fontSize: 24 }} />
+              <Stack direction="row" spacing={1.2} alignItems="center">
+                <ForumRounded sx={{ color: '#C8102E', fontSize: 22 }} />
                 <Box>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937' }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937', fontSize: '13px' }}>
                     交流社区
                   </Typography>
                   <Typography variant="caption" sx={{ color: '#6B7280', fontSize: '11px' }}>
@@ -707,13 +417,14 @@ export const MarxismHomeDashboard: React.FC = () => {
         </Grid>
       </Box>
 
-      {/* 6. 底部状态与版权栏 */}
+      {/* 5. 底部状态与版权栏 */}
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           pt: 2,
+          pb: 1,
           borderTop: '1px solid #E5E7EB',
           color: '#6B7280',
           fontSize: '12px',

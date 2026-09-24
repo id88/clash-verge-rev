@@ -348,8 +348,14 @@ const HomePage = () => {
         </Box>
       }
     >
-      {/* 马克思主义 VPN 核心仪表盘 */}
-      <MarxismHomeDashboard />
+      {/* 马克思主义 VPN 主题仪表盘 (完整保留所有原版功能模块与设置) */}
+      <MarxismHomeDashboard>
+        <Grid container spacing={1.5} columns={{ xs: 6, sm: 6, md: 12 }}>
+          {criticalCards}
+
+          {nonCriticalCards}
+        </Grid>
+      </MarxismHomeDashboard>
 
       {/* 首页设置弹窗 */}
       {settingsOpen && (

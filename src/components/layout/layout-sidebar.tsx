@@ -192,6 +192,7 @@ export const LayoutSidebar = (props: LayoutSidebarProps) => {
             </>
           )}
         </div>
+        <UpdateButton className="the-newbtn" />
       </div>
 
       {/* Edit navigation menu badge */}
