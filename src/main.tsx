@@ -1,3 +1,4 @@
+import './polyfills/browser-tauri-mock'
 import './styles/globals.css'
 import './assets/styles/index.scss'
 
