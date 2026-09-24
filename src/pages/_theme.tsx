@@ -1,17 +1,17 @@
 import getSystem from '@/utils/get-system'
 const OS = getSystem()
 
-// default theme setting
+// default theme setting - Marxism VPN theme
 export const defaultTheme = {
-  primary_color: '#007AFF',
-  secondary_color: '#FC9B76',
-  primary_text: '#000000',
-  secondary_text: '#3C3C4399',
-  info_color: '#007AFF',
-  error_color: '#FF3B30',
+  primary_color: '#B31B1B',
+  secondary_color: '#FFD700',
+  primary_text: '#1F2937',
+  secondary_text: '#6B7280',
+  info_color: '#B31B1B',
+  error_color: '#C8102E',
   warning_color: '#FF9500',
   success_color: '#06943D',
-  background_color: '#F5F5F5',
+  background_color: '#F8F9FA',
   font_family: `-apple-system, BlinkMacSystemFont,"Microsoft YaHei UI", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji"${
     OS === 'windows' ? ', twemoji mozilla' : ''
   }`,
@@ -20,12 +20,12 @@ export const defaultTheme = {
 // dark mode
 export const defaultDarkTheme = {
   ...defaultTheme,
-  primary_color: '#0A84FF',
-  secondary_color: '#FF9F0A',
+  primary_color: '#C8102E',
+  secondary_color: '#FFD700',
   primary_text: '#FFFFFF',
-  background_color: '#2E303D',
+  background_color: '#1A0809',
   secondary_text: '#EBEBF599',
-  info_color: '#0A84FF',
+  info_color: '#C8102E',
   error_color: '#FF453A',
   warning_color: '#FF9F0A',
   success_color: '#30D158',

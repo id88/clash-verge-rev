@@ -1,0 +1,200 @@
+/* ==========================================================================
+   Marxism VPN (马克思主义 VPN) - 全局视觉主题变量与样式注入
+   参考视觉设计: mksvpn.jpg
+   配色来源:
+     - 经典深红背景: #8B1018 (来自 tmp/all_images/marxism-icon.svg)
+     - 核心革命红:   #B31B1B (推荐主色 MarxRed)
+     - 旗帜亮红点缀: #C8102E (来自 tmp/all_images/marxism-mark.svg / Pantone 186 C)
+     - 导师画像米白: #F7F4EE (来自 tmp/all_images/portraits.svg / marxism-icon.svg)
+     - 苏维埃金星黄: #FFD700 (来自 tmp/all_images/soviet-hammer-and-sickle.svg)
+     - 极浅灰白主景: #F8F9FA (推荐底色 MarxBg / mksvpn.jpg 界面底色)
+   ========================================================================== */
+
+:root {
+  /* ------------------- 主题色彩 (PascalCase 命名规范) ------------------- */
+  --MarxRed: #B31B1B;
+  --MarxRed-deep: #8B1018;
+  --MarxRed-light: #C8102E;
+  --MarxRed-hover: #9A1616;
+  --MarxRed-active: #7A0E0E;
+  --MarxRed-subtle: rgba(179, 27, 27, 0.08);
+
+  --MarxBg: #F8F9FA;
+  --MarxBg-page: #F4F5F7;
+  --MarxBg-card: #FFFFFF;
+  --MarxBg-banner: #FFF1F0;
+
+  --MarxGold: #FFD700;
+  --MarxGold-hover: #E6C200;
+
+  --MarxCream: #F7F4EE;
+
+  --MarxText-primary: #1F2937;
+  --MarxText-secondary: #4B5563;
+  --MarxText-muted: #9CA3AF;
+  --MarxText-cream: #F7F4EE;
+
+  --MarxBorder: #E5E7EB;
+  --MarxBorder-red: #FFA39E;
+
+  --MarxSidebar-bg: #8B1018;
+  --MarxSidebar-bg-gradient: linear-gradient(180deg, #9E1012 0%, #8B1018 45%, #760910 100%);
+  --MarxSidebar-active: rgba(255, 255, 255, 0.16);
+  --MarxSidebar-hover: rgba(255, 255, 255, 0.08);
+  --MarxSidebar-text: #FFFFFF;
+  --MarxSidebar-text-muted: rgba(247, 244, 238, 0.75);
+
+  /* ------------------- 变量别名 (kebab-case 兼容) ------------------- */
+  --marx-red: var(--MarxRed);
+  --marx-red-deep: var(--MarxRed-deep);
+  --marx-red-light: var(--MarxRed-light);
+  --marx-red-hover: var(--MarxRed-hover);
+  --marx-red-active: var(--MarxRed-active);
+  --marx-red-subtle: var(--MarxRed-subtle);
+
+  --marx-bg: var(--MarxBg);
+  --marx-bg-page: var(--MarxBg-page);
+  --marx-bg-card: var(--MarxBg-card);
+  --marx-bg-banner: var(--MarxBg-banner);
+
+  --marx-gold: var(--MarxGold);
+  --marx-cream: var(--MarxCream);
+
+  --marx-text-primary: var(--MarxText-primary);
+  --marx-text-secondary: var(--MarxText-secondary);
+  --marx-text-muted: var(--MarxText-muted);
+
+  --marx-border: var(--MarxBorder);
+  --marx-border-red: var(--MarxBorder-red);
+
+  --marx-sidebar-bg: var(--MarxSidebar-bg);
+  --marx-sidebar-active: var(--MarxSidebar-active);
+  --marx-sidebar-hover: var(--MarxSidebar-hover);
+  --marx-sidebar-text: var(--MarxSidebar-text);
+  --marx-sidebar-text-muted: var(--MarxSidebar-text-muted);
+
+  /* ------------------- 覆写应用现有系统变量 ------------------- */
+  --primary-main: var(--MarxRed);
+  --selection-color: var(--MarxCream);
+  --scroller-color: rgba(179, 27, 27, 0.35);
+  --background-color: var(--MarxBg);
+  --background-color-alpha: rgba(179, 27, 27, 0.12);
+  --border-radius: 8px;
+  --divider-color: rgba(0, 0, 0, 0.08);
+  --scrollbar-bg: var(--MarxBg);
+  --scrollbar-thumb: rgba(179, 27, 27, 0.3);
+}
+
+/* ==========================================================================
+   全局样式注入 (无侵入改造: 不改动任何 JSX 结构)
+   ========================================================================== */
+
+/* 1. 左侧导航侧边栏: 红旗革命深红主题 */
+.layout-content__left {
+  background: var(--MarxSidebar-bg-gradient) !important;
+  color: var(--MarxSidebar-text) !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.15) !important;
+}
+
+/* 侧边栏标题与文本颜色处理 */
+.layout-content__left .the-logo {
+  color: var(--MarxCream) !important;
+}
+
+.layout-content__left .the-logo svg,
+.layout-content__left .the-logo img {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* 侧边栏导航条目 */
+.layout-content__left .the-menu .MuiListItemButton-root {
+  border-radius: 8px !important;
+  margin: 2px 10px !important;
+  transition: all 0.2s ease-in-out !important;
+  color: var(--MarxSidebar-text) !important;
+}
+
+.layout-content__left .the-menu .MuiListItemButton-root .MuiListItemText-primary {
+  color: var(--MarxSidebar-text) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px;
+}
+
+.layout-content__left .the-menu .MuiListItemButton-root .MuiListItemIcon-root {
+  color: var(--MarxCream) !important;
+  min-width: 36px !important;
+}
+
+.layout-content__left .the-menu .MuiListItemButton-root:hover {
+  background-color: var(--MarxSidebar-hover) !important;
+  transform: translateX(2px);
+}
+
+.layout-content__left .the-menu .MuiListItemButton-root.Mui-selected {
+  background-color: var(--MarxSidebar-active) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.layout-content__left .the-menu .MuiListItemButton-root.Mui-selected .MuiListItemText-primary {
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+.layout-content__left .the-menu .MuiListItemButton-root.Mui-selected .MuiListItemIcon-root {
+  color: var(--MarxGold) !important;
+}
+
+/* 侧边栏流量统计区 */
+.layout-content__left .the-traffic {
+  color: var(--MarxSidebar-text-muted) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.layout-content__left .the-traffic * {
+  color: var(--MarxSidebar-text-muted) !important;
+}
+
+/* 2. 右侧主工作区: 极浅灰白主底色 */
+.layout-content__right {
+  background-color: var(--MarxBg) !important;
+}
+
+.layout-content__right .the-content {
+  background-color: var(--MarxBg) !important;
+}
+
+/* 3. 卡片与容器风格统一 */
+.MuiPaper-root {
+  border-radius: 10px !important;
+  border: 1px solid var(--MarxBorder) !important;
+}
+
+/* 4. 主要操作按钮采用 MarxRed / MarxRed-light */
+.MuiButton-containedPrimary {
+  background-color: var(--MarxRed-light) !important;
+  color: #FFFFFF !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 6px rgba(200, 16, 46, 0.3) !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.MuiButton-containedPrimary:hover {
+  background-color: var(--MarxRed-hover) !important;
+  box-shadow: 0 4px 12px rgba(200, 16, 46, 0.4) !important;
+}
+
+/* 5. 焦点与选中效果 */
+::selection {
+  background-color: var(--MarxRed) !important;
+  color: var(--MarxCream) !important;
+}
+
+/* 6. 滚动条主题统一 */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(179, 27, 27, 0.25) !important;
+  border-radius: 6px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(179, 27, 27, 0.45) !important;
+}
