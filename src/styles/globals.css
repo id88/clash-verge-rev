@@ -177,8 +177,8 @@
   background-color: var(--MarxBg) !important;
 }
 
-/* 3. 卡片与容器风格统一 */
-.MuiPaper-root {
+/* 3. 主内容区里的卡片。菜单和对话框通过 Portal 挂在 body 上，不在这里。 */
+.layout-content__right .the-content .MuiPaper-root {
   border-radius: 10px !important;
   border: 1px solid var(--MarxBorder) !important;
 }

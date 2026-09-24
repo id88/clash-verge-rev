@@ -11,19 +11,38 @@ import {
 } from '@mui/icons-material'
 import { Box, Button, Grid, Paper, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import hammerAndSickleUrl from '@/assets/image/soviet-hammer-and-sickle.svg'
+import { useClashMode } from '@/hooks/use-clash'
 import { useSystemProxyState } from '@/hooks/use-system-proxy-state'
+import { useVerge } from '@/hooks/use-verge'
 import { showNotice } from '@/services/notice-service'
+import { version as appVersion } from '@root/package.json'
 
 interface MarxismHomeDashboardProps {
   children?: React.ReactNode
 }
 
+const CLASH_MODE_LABEL = {
+  rule: 'home.components.clashMode.labels.rule',
+  global: 'home.components.clashMode.labels.global',
+  direct: 'home.components.clashMode.labels.direct',
+} as const
+
 export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({
   children,
 }) => {
-  const { indicator: isConnected, toggleSystemProxy } = useSystemProxyState()
+  const { t } = useTranslation()
+  const { verge } = useVerge()
+  const { data: clashMode } = useClashMode()
+  const {
+    indicator: isConnected,
+    toggleSystemProxy,
+    readSystemProxyIndicator,
+  } = useSystemProxyState()
+  const modeLabelKey =
+    CLASH_MODE_LABEL[clashMode?.toLowerCase() as keyof typeof CLASH_MODE_LABEL]
 
   // Live timer for connection
   const [seconds, setSeconds] = useState(0)
@@ -50,12 +69,18 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({
   }
 
   const handleToggleConnection = async () => {
+    const turningOn = !isConnected
     setIsToggling(true)
     try {
-      await toggleSystemProxy(!isConnected)
-      showNotice.success(
-        !isConnected ? '已成功接入马克思主义安全网络' : '已断开系统代理连接',
-      )
+      await toggleSystemProxy(turningOn)
+      const applied = await readSystemProxyIndicator()
+      if (applied === turningOn) {
+        showNotice.success(turningOn ? '系统代理已开启' : '系统代理已关闭')
+      } else {
+        showNotice.error(
+          turningOn ? '系统代理没有生效，请确认内核已启动' : '系统代理未能关闭',
+        )
+      }
     } catch (err: any) {
       showNotice.error(err?.message || '操作失败')
     } finally {
@@ -245,13 +270,13 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({
                   variant="caption"
                   sx={{ color: '#6B7280', display: 'block', fontSize: '11px' }}
                 >
-                  连接协议
+                  系统代理
                 </Typography>
                 <Typography
                   variant="subtitle2"
                   sx={{ fontWeight: 700, color: '#1F2937', fontSize: '12.5px' }}
                 >
-                  Marxism Protocol
+                  {isConnected ? '已生效' : '未生效'}
                 </Typography>
               </Box>
             </Box>
@@ -272,13 +297,13 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({
                   variant="caption"
                   sx={{ color: '#6B7280', display: 'block', fontSize: '11px' }}
                 >
-                  加密级别
+                  TUN 模式
                 </Typography>
                 <Typography
                   variant="subtitle2"
                   sx={{ fontWeight: 700, color: '#1F2937', fontSize: '12.5px' }}
                 >
-                  AES-256 (最高级别)
+                  {verge?.enable_tun_mode ? '已开启' : '未开启'}
                 </Typography>
               </Box>
             </Box>
@@ -299,13 +324,13 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({
                   variant="caption"
                   sx={{ color: '#6B7280', display: 'block', fontSize: '11px' }}
                 >
-                  连接模式
+                  代理模式
                 </Typography>
                 <Typography
                   variant="subtitle2"
                   sx={{ fontWeight: 700, color: '#1F2937', fontSize: '12.5px' }}
                 >
-                  智能模式 (自动选优)
+                  {modeLabelKey ? t(modeLabelKey) : '—'}
                 </Typography>
               </Box>
             </Box>
@@ -525,7 +550,7 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({
           </Typography>
         </Stack>
         <Typography variant="caption" sx={{ color: '#9CA3AF' }}>
-          版本 1.0.0
+          {`版本 ${appVersion}`}
         </Typography>
       </Box>
     </Box>

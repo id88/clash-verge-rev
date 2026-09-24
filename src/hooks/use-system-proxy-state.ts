@@ -7,6 +7,8 @@ import { useSystemData } from '@/providers/app-data-context'
 import {
   getAutotemProxy,
   getEmbeddedServerPort,
+  getSystemProxy,
+  getVergeConfig,
   patchVergeConfig,
 } from '@/services/cmds'
 import {
@@ -32,17 +34,14 @@ export const useSystemProxyState = () => {
 
   const { proxy_auto_config, proxy_host } = verge ?? {}
 
-  const indicator = (() => {
-    const host = proxy_host || '127.0.0.1'
-    if (proxy_auto_config) {
-      if (!autoproxy?.enable) return false
-      if (!pacPort) return false
-      return autoproxy.url === `http://${host}:${pacPort}/commands/pac`
-    } else {
-      if (!sysproxy?.enable) return false
-      return sysproxy.server === `${host}:${displayedMixedPort}`
-    }
-  })()
+  const indicator = isObservedSystemProxy({
+    proxyAutoConfig: proxy_auto_config,
+    proxyHost: proxy_host,
+    sysproxy,
+    autoproxy,
+    pacPort,
+    displayedMixedPort,
+  })
 
   // Coalesce rapid clicks so only the latest requested state is applied.
   const pendingRef = useRef<boolean | null>(null)
@@ -111,9 +110,49 @@ export const useSystemProxyState = () => {
   const invalidateProxyState = () =>
     revalidateQueries([['getSystemProxy'], ['getAutotemProxy']])
 
+  // Reads the OS after a toggle. The value captured at click time is stale once
+  // the write and the cache refresh have both finished.
+  const readSystemProxyIndicator = async () => {
+    const [config, sys, auto, port] = await Promise.all([
+      getVergeConfig(),
+      getSystemProxy().catch(() => undefined),
+      getAutotemProxy(),
+      getEmbeddedServerPort().catch(() => undefined),
+    ])
+    return isObservedSystemProxy({
+      proxyAutoConfig: config?.proxy_auto_config,
+      proxyHost: config?.proxy_host,
+      sysproxy: sys,
+      autoproxy: auto,
+      pacPort: port,
+      displayedMixedPort,
+    })
+  }
+
   return {
     indicator,
     toggleSystemProxy,
+    readSystemProxyIndicator,
     invalidateProxyState,
   }
+}
+
+function isObservedSystemProxy(input: {
+  proxyAutoConfig?: boolean
+  proxyHost?: string
+  sysproxy?: { enable: boolean; server: string } | null
+  autoproxy?: { enable: boolean; url: string } | null
+  pacPort?: number | null
+  displayedMixedPort: number
+}) {
+  const host = input.proxyHost || '127.0.0.1'
+  if (input.proxyAutoConfig) {
+    if (!input.autoproxy?.enable) return false
+    if (!input.pacPort) return false
+    return (
+      input.autoproxy.url === `http://${host}:${input.pacPort}/commands/pac`
+    )
+  }
+  if (!input.sysproxy?.enable) return false
+  return input.sysproxy.server === `${host}:${input.displayedMixedPort}`
 }

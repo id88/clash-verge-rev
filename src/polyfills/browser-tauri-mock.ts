@@ -12,6 +12,43 @@ if (typeof window !== 'undefined') {
 
   if (!(window as any).__TAURI_INTERNALS__) {
     const callbacks = new Map<number, (res: any) => void>()
+    const previewPort = 7890
+    const vergeConfig: Record<string, any> = {
+      theme_mode: 'light',
+      theme_setting: {
+        primary_color: '#B31B1B',
+        secondary_color: '#FFD700',
+        background_color: '#F8F9FA',
+      },
+      language: 'zh',
+      collapse_navbar: false,
+      menu_icon: 'monochrome',
+      enable_system_proxy: false,
+      enable_tun_mode: false,
+      proxy_auto_config: false,
+      proxy_host: '127.0.0.1',
+      verge_mixed_port: previewPort,
+    }
+    const sysProxy = { enable: false, server: '', bypass: '' }
+    const autoProxy = { enable: false, url: '' }
+
+    const syncObservedProxy = () => {
+      const host = vergeConfig.proxy_host || '127.0.0.1'
+      const port = vergeConfig.verge_mixed_port || previewPort
+      if (vergeConfig.proxy_auto_config) {
+        sysProxy.enable = false
+        sysProxy.server = ''
+        autoProxy.enable = Boolean(vergeConfig.enable_system_proxy)
+        autoProxy.url = autoProxy.enable
+          ? `http://${host}:${previewPort}/commands/pac`
+          : ''
+        return
+      }
+      autoProxy.enable = false
+      autoProxy.url = ''
+      sysProxy.enable = Boolean(vergeConfig.enable_system_proxy)
+      sysProxy.server = sysProxy.enable ? `${host}:${port}` : ''
+    }
 
     ;(window as any).__TAURI_INTERNALS__ = {
       metadata: {
@@ -21,23 +58,29 @@ if (typeof window !== 'undefined') {
         webviews: [{ label: 'main' }],
       },
 
-      invoke: async (cmd: string, _args?: any) => {
+      invoke: async (cmd: string, args?: any) => {
         // Return sensible defaults for frontend display in browser preview
         switch (cmd) {
           case 'get_verge_config':
             return {
-              theme_mode: 'light',
-              theme_setting: {
-                primary_color: '#B31B1B',
-                secondary_color: '#FFD700',
-                background_color: '#F8F9FA',
-              },
-              language: 'zh',
-              collapse_navbar: false,
-              menu_icon: 'monochrome',
-              enable_system_proxy: false,
-              enable_tun_mode: false,
+              ...vergeConfig,
+              theme_setting: { ...vergeConfig.theme_setting },
             }
+
+          case 'patch_verge_config': {
+            const payload = args?.payload ?? {}
+            if (payload.theme_setting) {
+              vergeConfig.theme_setting = {
+                ...vergeConfig.theme_setting,
+                ...payload.theme_setting,
+              }
+            }
+            Object.assign(vergeConfig, payload, {
+              theme_setting: vergeConfig.theme_setting,
+            })
+            syncObservedProxy()
+            return null
+          }
 
           case 'get_profiles':
             return {
@@ -85,6 +128,7 @@ if (typeof window !== 'undefined') {
           case 'get_runtime_config':
             return {
               mode: 'rule',
+              'mixed-port': previewPort,
             }
 
           case 'get_runtime_logs':
@@ -92,11 +136,11 @@ if (typeof window !== 'undefined') {
 
           case 'get_clash_info':
             return {
-              port: 7890,
+              port: previewPort,
               socks_port: 7891,
               redir_port: 0,
               tproxy_port: 0,
-              mixed_port: 7890,
+              mixed_port: previewPort,
             }
 
           case 'get_clash_mode':
@@ -105,14 +149,23 @@ if (typeof window !== 'undefined') {
           case 'get_clash_logs':
             return []
 
-          case 'get_sysproxy':
-            return { enable: false, server: '', bypass: '' }
+          case 'get_sys_proxy':
+            return { ...sysProxy }
 
-          case 'get_autotem_proxy':
-            return { enable: false, url: '' }
+          case 'get_auto_proxy':
+            return { ...autoProxy }
 
           case 'get_embedded_server_port':
-            return 7890
+            return previewPort
+
+          case 'plugin:mihomo|get_base_config':
+            return { mixedPort: previewPort, mode: 'rule' }
+
+          case 'plugin:mihomo|get_rules':
+            return { rules: [] }
+
+          case 'plugin:mihomo|get_rule_providers':
+            return { providers: {} }
 
           case 'check_service':
             return false
