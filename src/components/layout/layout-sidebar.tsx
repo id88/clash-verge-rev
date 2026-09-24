@@ -3,6 +3,8 @@ import { Box, List, Menu, MenuItem } from '@mui/material'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import marxismMarkUrl from '@/assets/image/marxism-mark.svg'
+import portraitsUrl from '@/assets/image/portraits.svg'
 import { useVerge } from '@/hooks/use-verge'
 import { useNavMenuOrder } from '@/pages/_layout/hooks'
 import { navItems } from '@/pages/_navigation'
@@ -139,7 +141,7 @@ export const LayoutSidebar = (props: LayoutSidebarProps) => {
           }}
         >
           <img
-            src="/src/assets/image/marxism-mark.svg"
+            src={marxismMarkUrl}
             alt="Marxism VPN"
             style={{
               width: isCollapsed ? '34px' : '52px',
@@ -291,7 +293,7 @@ export const LayoutSidebar = (props: LayoutSidebarProps) => {
               left: 0,
               right: 0,
               height: '130px',
-              backgroundImage: 'url(/src/assets/image/portraits.svg)',
+              backgroundImage: `url(${portraitsUrl})`,
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'bottom center',
               backgroundSize: '180px auto',
@@ -301,10 +303,25 @@ export const LayoutSidebar = (props: LayoutSidebarProps) => {
             }}
           />
           <div style={{ position: 'relative', zIndex: 1 }}>
-            <p style={{ margin: '0 0 6px', fontWeight: 500, fontStyle: 'italic', letterSpacing: '0.3px' }}>
+            <p
+              style={{
+                margin: '0 0 6px',
+                fontWeight: 500,
+                fontStyle: 'italic',
+                letterSpacing: '0.3px',
+              }}
+            >
               “哲学家们只是用不同的方式解释世界，问题在于改变世界。”
             </p>
-            <p style={{ margin: 0, textAlign: 'right', color: '#FFD700', fontSize: '10.5px', fontWeight: 600 }}>
+            <p
+              style={{
+                margin: 0,
+                textAlign: 'right',
+                color: '#FFD700',
+                fontSize: '10.5px',
+                fontWeight: 600,
+              }}
+            >
               —— 卡尔·马克思
             </p>
           </div>

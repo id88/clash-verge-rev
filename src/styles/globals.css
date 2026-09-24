@@ -2,46 +2,51 @@
    Marxism VPN (马克思主义 VPN) - 全局视觉主题变量与样式注入
    参考视觉设计: mksvpn.jpg
    配色来源:
-     - 经典深红背景: #8B1018 (来自 tmp/all_images/marxism-icon.svg)
+     - 经典深红背景: #8B1018 (来自 src/assets/image/marxism-icon.svg)
      - 核心革命红:   #B31B1B (推荐主色 MarxRed)
-     - 旗帜亮红点缀: #C8102E (来自 tmp/all_images/marxism-mark.svg / Pantone 186 C)
-     - 导师画像米白: #F7F4EE (来自 tmp/all_images/portraits.svg / marxism-icon.svg)
-     - 苏维埃金星黄: #FFD700 (来自 tmp/all_images/soviet-hammer-and-sickle.svg)
+     - 旗帜亮红点缀: #C8102E (来自 src/assets/image/marxism-mark.svg / Pantone 186 C)
+     - 导师画像米白: #F7F4EE (来自 src/assets/image/portraits.svg / marxism-icon.svg)
+     - 苏维埃金星黄: #FFD700 (来自 src/assets/image/soviet-hammer-and-sickle.svg)
      - 极浅灰白主景: #F8F9FA (推荐底色 MarxBg / mksvpn.jpg 界面底色)
    ========================================================================== */
 
 :root {
   /* ------------------- 主题色彩 (PascalCase 命名规范) ------------------- */
-  --MarxRed: #B31B1B;
-  --MarxRed-deep: #8B1018;
-  --MarxRed-light: #C8102E;
-  --MarxRed-hover: #9A1616;
-  --MarxRed-active: #7A0E0E;
+  --MarxRed: #b31b1b;
+  --MarxRed-deep: #8b1018;
+  --MarxRed-light: #c8102e;
+  --MarxRed-hover: #9a1616;
+  --MarxRed-active: #7a0e0e;
   --MarxRed-subtle: rgba(179, 27, 27, 0.08);
 
-  --MarxBg: #F8F9FA;
-  --MarxBg-page: #F4F5F7;
-  --MarxBg-card: #FFFFFF;
-  --MarxBg-banner: #FFF1F0;
+  --MarxBg: #f8f9fa;
+  --MarxBg-page: #f4f5f7;
+  --MarxBg-card: #ffffff;
+  --MarxBg-banner: #fff1f0;
 
-  --MarxGold: #FFD700;
-  --MarxGold-hover: #E6C200;
+  --MarxGold: #ffd700;
+  --MarxGold-hover: #e6c200;
 
-  --MarxCream: #F7F4EE;
+  --MarxCream: #f7f4ee;
 
-  --MarxText-primary: #1F2937;
-  --MarxText-secondary: #4B5563;
-  --MarxText-muted: #9CA3AF;
-  --MarxText-cream: #F7F4EE;
+  --MarxText-primary: #1f2937;
+  --MarxText-secondary: #4b5563;
+  --MarxText-muted: #9ca3af;
+  --MarxText-cream: #f7f4ee;
 
-  --MarxBorder: #E5E7EB;
-  --MarxBorder-red: #FFA39E;
+  --MarxBorder: #e5e7eb;
+  --MarxBorder-red: #ffa39e;
 
-  --MarxSidebar-bg: #8B1018;
-  --MarxSidebar-bg-gradient: linear-gradient(180deg, #9E1012 0%, #8B1018 45%, #760910 100%);
+  --MarxSidebar-bg: #8b1018;
+  --MarxSidebar-bg-gradient: linear-gradient(
+    180deg,
+    #9e1012 0%,
+    #8b1018 45%,
+    #760910 100%
+  );
   --MarxSidebar-active: rgba(255, 255, 255, 0.16);
   --MarxSidebar-hover: rgba(255, 255, 255, 0.08);
-  --MarxSidebar-text: #FFFFFF;
+  --MarxSidebar-text: #ffffff;
   --MarxSidebar-text-muted: rgba(247, 244, 238, 0.75);
 
   /* ------------------- 变量别名 (kebab-case 兼容) ------------------- */
@@ -114,7 +119,10 @@
   color: var(--MarxSidebar-text) !important;
 }
 
-.layout-content__left .the-menu .MuiListItemButton-root .MuiListItemText-primary {
+.layout-content__left
+  .the-menu
+  .MuiListItemButton-root
+  .MuiListItemText-primary {
   color: var(--MarxSidebar-text) !important;
   font-weight: 600 !important;
   letter-spacing: 0.5px;
@@ -135,12 +143,18 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
 }
 
-.layout-content__left .the-menu .MuiListItemButton-root.Mui-selected .MuiListItemText-primary {
-  color: #FFFFFF !important;
+.layout-content__left
+  .the-menu
+  .MuiListItemButton-root.Mui-selected
+  .MuiListItemText-primary {
+  color: #ffffff !important;
   font-weight: 700 !important;
 }
 
-.layout-content__left .the-menu .MuiListItemButton-root.Mui-selected .MuiListItemIcon-root {
+.layout-content__left
+  .the-menu
+  .MuiListItemButton-root.Mui-selected
+  .MuiListItemIcon-root {
   color: var(--MarxGold) !important;
 }
 
@@ -172,7 +186,7 @@
 /* 4. 主要操作按钮采用 MarxRed / MarxRed-light */
 .MuiButton-containedPrimary {
   background-color: var(--MarxRed-light) !important;
-  color: #FFFFFF !important;
+  color: #ffffff !important;
   font-weight: 600 !important;
   box-shadow: 0 2px 6px rgba(200, 16, 46, 0.3) !important;
   transition: all 0.2s ease-in-out !important;

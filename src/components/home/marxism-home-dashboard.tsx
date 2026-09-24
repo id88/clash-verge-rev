@@ -9,16 +9,10 @@ import {
   ForumRounded,
   ChevronRightRounded,
 } from '@mui/icons-material'
-import {
-  Box,
-  Button,
-  Grid,
-  Paper,
-  Stack,
-  Typography,
-} from '@mui/material'
+import { Box, Button, Grid, Paper, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 
+import hammerAndSickleUrl from '@/assets/image/soviet-hammer-and-sickle.svg'
 import { useSystemProxyState } from '@/hooks/use-system-proxy-state'
 import { showNotice } from '@/services/notice-service'
 
@@ -26,7 +20,9 @@ interface MarxismHomeDashboardProps {
   children?: React.ReactNode
 }
 
-export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ children }) => {
+export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({
+  children,
+}) => {
   const { indicator: isConnected, toggleSystemProxy } = useSystemProxyState()
 
   // Live timer for connection
@@ -97,7 +93,9 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
           size="small"
           endIcon={<ChevronRightRounded sx={{ fontSize: 16 }} />}
           onClick={() =>
-            showNotice.info('最新公告：牢牢把握意识形态工作领导权，筑牢网络安全防线！')
+            showNotice.info(
+              '最新公告：牢牢把握意识形态工作领导权，筑牢网络安全防线！',
+            )
           }
           sx={{
             color: '#8B1018',
@@ -154,7 +152,7 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
           >
             <Box
               component="img"
-              src="/src/assets/image/soviet-hammer-and-sickle.svg"
+              src={hammerAndSickleUrl}
               alt="Soviet Hammer and Sickle"
               sx={{
                 width: 80,
@@ -223,23 +221,36 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
             },
           }}
         >
-          {isToggling
-            ? '处理中...'
-            : isConnected
-              ? '断开连接'
-              : '立即连接'}
+          {isToggling ? '处理中...' : isConnected ? '断开连接' : '立即连接'}
         </Button>
 
         {/* 三联指标卡片嵌入 */}
-        <Grid container spacing={2} sx={{ mt: 2.5, pt: 2, borderTop: '1px solid #F3F4F6' }}>
+        <Grid
+          container
+          spacing={2}
+          sx={{ mt: 2.5, pt: 2, borderTop: '1px solid #F3F4F6' }}
+        >
           <Grid size={{ xs: 12, sm: 4 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.2 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 1.2,
+              }}
+            >
               <SecurityRounded sx={{ color: '#C8102E', fontSize: 20 }} />
               <Box sx={{ textAlign: 'left' }}>
-                <Typography variant="caption" sx={{ color: '#6B7280', display: 'block', fontSize: '11px' }}>
+                <Typography
+                  variant="caption"
+                  sx={{ color: '#6B7280', display: 'block', fontSize: '11px' }}
+                >
                   连接协议
                 </Typography>
-                <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937', fontSize: '12.5px' }}>
+                <Typography
+                  variant="subtitle2"
+                  sx={{ fontWeight: 700, color: '#1F2937', fontSize: '12.5px' }}
+                >
                   Marxism Protocol
                 </Typography>
               </Box>
@@ -247,13 +258,26 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
           </Grid>
 
           <Grid size={{ xs: 12, sm: 4 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.2 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 1.2,
+              }}
+            >
               <LockRounded sx={{ color: '#C8102E', fontSize: 20 }} />
               <Box sx={{ textAlign: 'left' }}>
-                <Typography variant="caption" sx={{ color: '#6B7280', display: 'block', fontSize: '11px' }}>
+                <Typography
+                  variant="caption"
+                  sx={{ color: '#6B7280', display: 'block', fontSize: '11px' }}
+                >
                   加密级别
                 </Typography>
-                <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937', fontSize: '12.5px' }}>
+                <Typography
+                  variant="subtitle2"
+                  sx={{ fontWeight: 700, color: '#1F2937', fontSize: '12.5px' }}
+                >
                   AES-256 (最高级别)
                 </Typography>
               </Box>
@@ -261,13 +285,26 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
           </Grid>
 
           <Grid size={{ xs: 12, sm: 4 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1.2 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 1.2,
+              }}
+            >
               <HubRounded sx={{ color: '#C8102E', fontSize: 20 }} />
               <Box sx={{ textAlign: 'left' }}>
-                <Typography variant="caption" sx={{ color: '#6B7280', display: 'block', fontSize: '11px' }}>
+                <Typography
+                  variant="caption"
+                  sx={{ color: '#6B7280', display: 'block', fontSize: '11px' }}
+                >
                   连接模式
                 </Typography>
-                <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937', fontSize: '12.5px' }}>
+                <Typography
+                  variant="subtitle2"
+                  sx={{ fontWeight: 700, color: '#1F2937', fontSize: '12.5px' }}
+                >
                   智能模式 (自动选优)
                 </Typography>
               </Box>
@@ -277,13 +314,14 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
       </Paper>
 
       {/* 3. 原版完整功能模块卡片区域 (100% 保留全部原有功能卡片与设置) */}
-      <Box sx={{ mb: 2.5 }}>
-        {children}
-      </Box>
+      <Box sx={{ mb: 2.5 }}>{children}</Box>
 
       {/* 4. 快捷工具栏 */}
       <Box sx={{ mb: 3 }}>
-        <Typography variant="subtitle2" sx={{ fontWeight: 800, color: '#1F2937', mb: 1.5, px: 0.5 }}>
+        <Typography
+          variant="subtitle2"
+          sx={{ fontWeight: 800, color: '#1F2937', mb: 1.5, px: 0.5 }}
+        >
           快捷工具
         </Typography>
 
@@ -291,7 +329,9 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
           <Grid size={{ xs: 6, sm: 3 }}>
             <Paper
               elevation={0}
-              onClick={() => showNotice.info('正在载入马克思主义基础理论学习平台...')}
+              onClick={() =>
+                showNotice.info('正在载入马克思主义基础理论学习平台...')
+              }
               sx={{
                 p: 1.8,
                 bgcolor: '#FFFFFF',
@@ -306,13 +346,23 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
                 },
               }}
             >
-              <Stack direction="row" spacing={1.2} sx={{ alignItems: 'center' }}>
+              <Stack
+                direction="row"
+                spacing={1.2}
+                sx={{ alignItems: 'center' }}
+              >
                 <MenuBookRounded sx={{ color: '#C8102E', fontSize: 22 }} />
                 <Box>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937', fontSize: '13px' }}>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{ fontWeight: 700, color: '#1F2937', fontSize: '13px' }}
+                  >
                     理论学习
                   </Typography>
-                  <Typography variant="caption" sx={{ color: '#6B7280', fontSize: '11px' }}>
+                  <Typography
+                    variant="caption"
+                    sx={{ color: '#6B7280', fontSize: '11px' }}
+                  >
                     学习经典理论
                   </Typography>
                 </Box>
@@ -323,7 +373,11 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
           <Grid size={{ xs: 6, sm: 3 }}>
             <Paper
               elevation={0}
-              onClick={() => showNotice.info('正在载入《资本论》《共产党宣言》等重要文献库...')}
+              onClick={() =>
+                showNotice.info(
+                  '正在载入《资本论》《共产党宣言》等重要文献库...',
+                )
+              }
               sx={{
                 p: 1.8,
                 bgcolor: '#FFFFFF',
@@ -338,13 +392,23 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
                 },
               }}
             >
-              <Stack direction="row" spacing={1.2} sx={{ alignItems: 'center' }}>
+              <Stack
+                direction="row"
+                spacing={1.2}
+                sx={{ alignItems: 'center' }}
+              >
                 <AutoStoriesRounded sx={{ color: '#C8102E', fontSize: 22 }} />
                 <Box>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937', fontSize: '13px' }}>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{ fontWeight: 700, color: '#1F2937', fontSize: '13px' }}
+                  >
                     重要文献
                   </Typography>
-                  <Typography variant="caption" sx={{ color: '#6B7280', fontSize: '11px' }}>
+                  <Typography
+                    variant="caption"
+                    sx={{ color: '#6B7280', fontSize: '11px' }}
+                  >
                     阅读经典著作
                   </Typography>
                 </Box>
@@ -370,13 +434,23 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
                 },
               }}
             >
-              <Stack direction="row" spacing={1.2} sx={{ alignItems: 'center' }}>
+              <Stack
+                direction="row"
+                spacing={1.2}
+                sx={{ alignItems: 'center' }}
+              >
                 <StarRounded sx={{ color: '#FFD700', fontSize: 22 }} />
                 <Box>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937', fontSize: '13px' }}>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{ fontWeight: 700, color: '#1F2937', fontSize: '13px' }}
+                  >
                     时政要闻
                   </Typography>
-                  <Typography variant="caption" sx={{ color: '#6B7280', fontSize: '11px' }}>
+                  <Typography
+                    variant="caption"
+                    sx={{ color: '#6B7280', fontSize: '11px' }}
+                  >
                     了解最新动态
                   </Typography>
                 </Box>
@@ -402,13 +476,23 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
                 },
               }}
             >
-              <Stack direction="row" spacing={1.2} sx={{ alignItems: 'center' }}>
+              <Stack
+                direction="row"
+                spacing={1.2}
+                sx={{ alignItems: 'center' }}
+              >
                 <ForumRounded sx={{ color: '#C8102E', fontSize: 22 }} />
                 <Box>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#1F2937', fontSize: '13px' }}>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{ fontWeight: 700, color: '#1F2937', fontSize: '13px' }}
+                  >
                     交流社区
                   </Typography>
-                  <Typography variant="caption" sx={{ color: '#6B7280', fontSize: '11px' }}>
+                  <Typography
+                    variant="caption"
+                    sx={{ color: '#6B7280', fontSize: '11px' }}
+                  >
                     思想交流与探讨
                   </Typography>
                 </Box>
@@ -433,7 +517,10 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({ chil
       >
         <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
           <SecurityRounded sx={{ fontSize: 16, color: '#C8102E' }} />
-          <Typography variant="caption" sx={{ color: '#6B7280', fontWeight: 500 }}>
+          <Typography
+            variant="caption"
+            sx={{ color: '#6B7280', fontWeight: 500 }}
+          >
             马克思主义VPN保护您的网络自由与思想安全
           </Typography>
         </Stack>
