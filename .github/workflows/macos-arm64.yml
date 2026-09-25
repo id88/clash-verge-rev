@@ -1,0 +1,95 @@
+name: macOS arm64
+
+# Apple Silicon only. GitHub-hosted macOS runners are arm64, not an M4
+# specifically; the aarch64 binary runs on M1 through M4.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: macos-arm64-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_INCREMENTAL: 0
+  RUST_BACKTRACE: short
+  HUSKY: 0
+  TARGET: aarch64-apple-darwin
+
+jobs:
+  build:
+    name: Build macOS arm64
+    runs-on: macos-26
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: '1.98.1'
+          targets: aarch64-apple-darwin
+
+      - name: Cache Rust
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: . -> target
+          cache-all-crates: true
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10.18.1
+
+      - name: Install Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: pnpm
+
+      - name: Install dependencies and sidecars
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm run prebuild "$TARGET"
+
+      - name: Build unsigned app and dmg
+        run: pnpm build -- --target "$TARGET" --bundles app,dmg --config src-tauri/tauri.ci.json
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+
+      - name: Pack the app bundle
+        run: |
+          version="$(jq -r .version package.json)"
+          app_dir="src-tauri/target/${TARGET}/release/bundle/macos"
+          app_name="$(basename "$(find "$app_dir" -maxdepth 1 -name '*.app' -print -quit)")"
+          ditto -c -k --keepParent "$app_dir/$app_name" "Clash.Verge_${version}_aarch64.app.zip"
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: macos-arm64
+          path: |
+            src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/*.dmg
+            Clash.Verge_*_aarch64.app.zip
+          if-no-files-found: error
+
+      - name: Publish rolling release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: macos-arm64
+          target_commitish: ${{ github.sha }}
+          name: macOS arm64
+          prerelease: true
+          body: |
+            Unsigned Apple Silicon build (arm64). It runs on M1, M2, M3, and M4.
+
+            Gatekeeper will block the first open. Right-click the app, choose Open, or run `xattr -cr` on the app after copying it out of the dmg.
+          files: |
+            src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/*.dmg
+            Clash.Verge_*_aarch64.app.zip
+          token: ${{ secrets.GITHUB_TOKEN }}
