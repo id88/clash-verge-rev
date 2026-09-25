@@ -59,7 +59,9 @@ jobs:
           pnpm run prebuild "$TARGET"
 
       - name: Build unsigned app and dmg
-        run: pnpm build -- --target "$TARGET" --bundles app,dmg --config src-tauri/tauri.ci.json
+        # Call tauri directly. `pnpm build --` forwards the extra `--`, and
+        # tauri then passes everything after it to cargo.
+        run: pnpm exec tauri build --target "$TARGET" --bundles app,dmg --no-sign --config src-tauri/tauri.ci.json
         env:
           NODE_OPTIONS: --max-old-space-size=4096
 
