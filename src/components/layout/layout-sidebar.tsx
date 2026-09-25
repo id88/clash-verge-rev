@@ -122,7 +122,11 @@ export const LayoutSidebar = (props: LayoutSidebarProps) => {
         className="the-logo"
         data-tauri-drag-region="false"
         style={{
+          // layout.scss gives .the-logo height: 100%. With the extra brand
+          // lines that fills the sidebar and the overflow:hidden parent clips
+          // the navigation that follows.
           flex: '0 0 auto',
+          height: 'auto',
           padding: isCollapsed ? '16px 4px 10px' : '16px 12px 12px',
           display: 'flex',
           flexDirection: 'column',
