@@ -68,7 +68,7 @@ jobs:
       - name: Pack the app bundle
         run: |
           version="$(jq -r .version package.json)"
-          app_dir="src-tauri/target/${TARGET}/release/bundle/macos"
+          app_dir="target/${TARGET}/release/bundle/macos"
           app_name="$(basename "$(find "$app_dir" -maxdepth 1 -name '*.app' -print -quit)")"
           ditto -c -k --keepParent "$app_dir/$app_name" "Clash.Verge_${version}_aarch64.app.zip"
           echo "VERSION=$version" >> "$GITHUB_ENV"
@@ -78,7 +78,7 @@ jobs:
         with:
           name: macos-arm64
           path: |
-            src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/*.dmg
+            target/aarch64-apple-darwin/release/bundle/dmg/*.dmg
             Clash.Verge_*_aarch64.app.zip
           if-no-files-found: error
 
@@ -94,6 +94,6 @@ jobs:
 
             Gatekeeper will block the first open. Right-click the app, choose Open, or run `xattr -cr` on the app after copying it out of the dmg.
           files: |
-            src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/*.dmg
+            target/aarch64-apple-darwin/release/bundle/dmg/*.dmg
             Clash.Verge_*_aarch64.app.zip
           token: ${{ secrets.GITHUB_TOKEN }}
