@@ -3,8 +3,7 @@ import { Box, List, Menu, MenuItem } from '@mui/material'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import marxismMarkUrl from '@/assets/image/marxism-mark.svg'
-import portraitsUrl from '@/assets/image/portraits.svg'
+import karlMarxUrl from '@/assets/image/karl-marx.png'
 import { useVerge } from '@/hooks/use-verge'
 import { useNavMenuOrder } from '@/pages/_layout/hooks'
 import { navItems } from '@/pages/_navigation'
@@ -145,12 +144,15 @@ export const LayoutSidebar = (props: LayoutSidebarProps) => {
           }}
         >
           <img
-            src={marxismMarkUrl}
-            alt="Marxism VPN"
+            src={karlMarxUrl}
+            alt="Karl Marx"
             style={{
-              width: isCollapsed ? '34px' : '52px',
-              height: isCollapsed ? '34px' : '52px',
-              filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.35))',
+              width: isCollapsed ? '40px' : '128px',
+              height: 'auto',
+              maxWidth: '100%',
+              objectFit: 'contain',
+              objectPosition: 'center',
+              filter: 'none',
             }}
           />
           {!isCollapsed && (
@@ -276,59 +278,38 @@ export const LayoutSidebar = (props: LayoutSidebarProps) => {
         <LayoutTraffic />
       </div>
 
-      {/* Marx Quote & Great Leaders Watermark */}
       {!isCollapsed && (
         <div
           style={{
-            position: 'relative',
             marginTop: 'auto',
             padding: '16px 16px 20px',
             fontSize: '11px',
             color: 'rgba(247, 244, 238, 0.85)',
             lineHeight: 1.6,
             borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-            overflow: 'hidden',
           }}
         >
-          <div
+          <p
             style={{
-              position: 'absolute',
-              bottom: '-10px',
-              left: 0,
-              right: 0,
-              height: '130px',
-              backgroundImage: `url(${portraitsUrl})`,
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'bottom center',
-              backgroundSize: '180px auto',
-              opacity: 0.12,
-              pointerEvents: 'none',
-              filter: 'contrast(1.5)',
+              margin: '0 0 6px',
+              fontWeight: 500,
+              fontStyle: 'italic',
+              letterSpacing: '0.3px',
             }}
-          />
-          <div style={{ position: 'relative', zIndex: 1 }}>
-            <p
-              style={{
-                margin: '0 0 6px',
-                fontWeight: 500,
-                fontStyle: 'italic',
-                letterSpacing: '0.3px',
-              }}
-            >
-              “哲学家们只是用不同的方式解释世界，问题在于改变世界。”
-            </p>
-            <p
-              style={{
-                margin: 0,
-                textAlign: 'right',
-                color: '#FFD700',
-                fontSize: '10.5px',
-                fontWeight: 600,
-              }}
-            >
-              —— 卡尔·马克思
-            </p>
-          </div>
+          >
+            “哲学家们只是用不同的方式解释世界，而问题在于改变世界。”
+          </p>
+          <p
+            style={{
+              margin: 0,
+              textAlign: 'right',
+              color: '#FFD700',
+              fontSize: '10.5px',
+              fontWeight: 600,
+            }}
+          >
+            —— 卡尔·马克思
+          </p>
         </div>
       )}
     </div>

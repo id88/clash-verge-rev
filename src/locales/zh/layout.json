@@ -3,13 +3,13 @@
     "navigation": {
       "tabs": {
         "home": "连 接",
-        "proxies": "服 务 器",
-        "rules": "安全与隐私",
+        "proxies": "宣传阵地",
         "profiles": "学习资料",
+        "connections": "红色记忆",
+        "rules": "交流社区",
+        "logs": "时政要闻",
         "unlock": "信仰空间",
-        "settings": "设 置",
-        "logs": "关于我们",
-        "connections": "连接明细"
+        "settings": "关于我们"
       },
       "menu": {
         "reorderMode": "菜单排序模式",
