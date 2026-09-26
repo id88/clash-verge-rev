@@ -11,12 +11,9 @@ import {
 } from '@mui/icons-material'
 import { Box, Button, Grid, Paper, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import hammerAndSickleUrl from '@/assets/image/soviet-hammer-and-sickle.svg'
-import { useClashMode } from '@/hooks/use-clash'
 import { useSystemProxyState } from '@/hooks/use-system-proxy-state'
-import { useVerge } from '@/hooks/use-verge'
 import { showNotice } from '@/services/notice-service'
 import { version as appVersion } from '@root/package.json'
 
@@ -24,25 +21,14 @@ interface MarxismHomeDashboardProps {
   children?: React.ReactNode
 }
 
-const CLASH_MODE_LABEL = {
-  rule: 'home.components.clashMode.labels.rule',
-  global: 'home.components.clashMode.labels.global',
-  direct: 'home.components.clashMode.labels.direct',
-} as const
-
 export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({
   children,
 }) => {
-  const { t } = useTranslation()
-  const { verge } = useVerge()
-  const { data: clashMode } = useClashMode()
   const {
     indicator: isConnected,
     toggleSystemProxy,
     readSystemProxyIndicator,
   } = useSystemProxyState()
-  const modeLabelKey =
-    CLASH_MODE_LABEL[clashMode?.toLowerCase() as keyof typeof CLASH_MODE_LABEL]
 
   // Live timer for connection
   const [seconds, setSeconds] = useState(0)
@@ -270,13 +256,19 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({
                   variant="caption"
                   sx={{ color: '#6B7280', display: 'block', fontSize: '11px' }}
                 >
-                  系统代理
+                  连接协议
                 </Typography>
                 <Typography
                   variant="subtitle2"
-                  sx={{ fontWeight: 700, color: '#1F2937', fontSize: '12.5px' }}
+                  sx={{ fontWeight: 700, color: '#1F2937', fontSize: '13px' }}
                 >
-                  {isConnected ? '已生效' : '未生效'}
+                  Marxism Protocol
+                </Typography>
+                <Typography
+                  variant="caption"
+                  sx={{ color: '#9CA3AF', display: 'block', fontSize: '11px' }}
+                >
+                  安全可靠
                 </Typography>
               </Box>
             </Box>
@@ -297,13 +289,19 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({
                   variant="caption"
                   sx={{ color: '#6B7280', display: 'block', fontSize: '11px' }}
                 >
-                  TUN 模式
+                  加密级别
                 </Typography>
                 <Typography
                   variant="subtitle2"
-                  sx={{ fontWeight: 700, color: '#1F2937', fontSize: '12.5px' }}
+                  sx={{ fontWeight: 700, color: '#1F2937', fontSize: '13px' }}
                 >
-                  {verge?.enable_tun_mode ? '已开启' : '未开启'}
+                  AES-256
+                </Typography>
+                <Typography
+                  variant="caption"
+                  sx={{ color: '#9CA3AF', display: 'block', fontSize: '11px' }}
+                >
+                  最高级别
                 </Typography>
               </Box>
             </Box>
@@ -324,13 +322,19 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({
                   variant="caption"
                   sx={{ color: '#6B7280', display: 'block', fontSize: '11px' }}
                 >
-                  代理模式
+                  连接模式
                 </Typography>
                 <Typography
                   variant="subtitle2"
-                  sx={{ fontWeight: 700, color: '#1F2937', fontSize: '12.5px' }}
+                  sx={{ fontWeight: 700, color: '#1F2937', fontSize: '13px' }}
                 >
-                  {modeLabelKey ? t(modeLabelKey) : '—'}
+                  智能模式
+                </Typography>
+                <Typography
+                  variant="caption"
+                  sx={{ color: '#9CA3AF', display: 'block', fontSize: '11px' }}
+                >
+                  自动选择最优路线
                 </Typography>
               </Box>
             </Box>

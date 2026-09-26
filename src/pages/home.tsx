@@ -88,15 +88,15 @@ interface HomeCardsSettings {
 
 const DEFAULT_HOME_CARDS: HomeCardsSettings = {
   info: false,
-  profile: true,
-  proxy: true,
-  network: true,
-  mode: true,
-  traffic: true,
+  profile: false,
+  proxy: false,
+  network: false,
+  mode: false,
+  traffic: false,
   clashinfo: true,
   systeminfo: true,
-  test: true,
-  ip: true,
+  test: false,
+  ip: false,
 }
 
 const serializeCardFlags = (cards: HomeCardsSettings) =>
