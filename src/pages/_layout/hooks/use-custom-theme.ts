@@ -55,7 +55,7 @@ const wrapCssInjectionWithScope = (css?: string) => {
     return null
   }
   const scopeRoot = CSS_INJECTION_SCOPE_ROOT
-  const scopeLimit = CSS_INJECTION_SCOPE_LIMIT
+  const scopeLimit = `${CSS_INJECTION_SCOPE_LIMIT} > *`
   const scopedBlock = `@scope (${scopeRoot}) to (${scopeLimit}) {
 ${css}
 }`
@@ -203,7 +203,8 @@ export const useCustomTheme = () => {
     if (rootEle) {
       const backgroundColor = dt.background_color
       const selectColor = mode === 'light' ? '#F7F4EE' : '#3E3E3E'
-      const scrollColor = mode === 'light' ? 'rgba(179, 27, 27, 0.35)' : '#555555'
+      const scrollColor =
+        mode === 'light' ? 'rgba(179, 27, 27, 0.35)' : '#555555'
       const dividerColor =
         mode === 'light' ? 'rgba(0, 0, 0, 0.06)' : 'rgba(255, 255, 255, 0.06)'
       rootEle.style.setProperty('--divider-color', dividerColor)
