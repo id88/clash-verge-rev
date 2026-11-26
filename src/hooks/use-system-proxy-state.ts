@@ -123,7 +123,7 @@ export const useSystemProxyState = () => {
     const [config, sys, auto, port] = await Promise.all([
       getVergeConfig(),
       getSystemProxy().catch(() => undefined),
-      getAutotemProxy(),
+      getAutoProxy(),
       getEmbeddedServerPort().catch(() => undefined),
     ])
     return isObservedSystemProxy({
@@ -145,8 +145,8 @@ export const useSystemProxyState = () => {
 }
 
 function isObservedSystemProxy(input: {
-  proxyAutoConfig?: boolean
-  proxyHost?: string
+  proxyAutoConfig?: boolean | null
+  proxyHost?: string | null
   sysproxy?: { enable: boolean; server: string } | null
   autoproxy?: { enable: boolean; url: string } | null
   pacPort?: number | null
