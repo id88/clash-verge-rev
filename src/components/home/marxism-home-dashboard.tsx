@@ -21,6 +21,15 @@ interface MarxismHomeDashboardProps {
   children?: React.ReactNode
 }
 
+// Keep the session start time outside component state so navigating away from
+// Home and returning does not reset the elapsed timer.
+let connectedSinceMs: number | null = null
+
+const getElapsedSeconds = () =>
+  connectedSinceMs === null
+    ? 0
+    : Math.max(0, Math.floor((Date.now() - connectedSinceMs) / 1000))
+
 export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({
   children,
 }) => {
@@ -31,17 +40,27 @@ export const MarxismHomeDashboard: React.FC<MarxismHomeDashboardProps> = ({
   } = useSystemProxyState()
 
   // Live timer for connection
-  const [seconds, setSeconds] = useState(0)
+  const [seconds, setSeconds] = useState(() =>
+    isConnected ? getElapsedSeconds() : 0,
+  )
   const [isToggling, setIsToggling] = useState(false)
 
   useEffect(() => {
     if (!isConnected) {
+      connectedSinceMs = null
       return
     }
+    if (connectedSinceMs === null) {
+      connectedSinceMs = Date.now()
+    }
+    const syncTimer = setTimeout(() => {
+      setSeconds(getElapsedSeconds())
+    }, 0)
     const interval = setInterval(() => {
-      setSeconds((prev) => prev + 1)
+      setSeconds(getElapsedSeconds())
     }, 1000)
     return () => {
+      clearTimeout(syncTimer)
       clearInterval(interval)
       setSeconds(0)
     }

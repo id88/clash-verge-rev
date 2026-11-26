@@ -38,7 +38,7 @@
 
 ## 三、标准本地同步工作流（推荐步骤）
 
-每次官方发布新版本后，请在本地终端按以下 5 个标准步骤完成平滑升级：
+每次官方发布新版本后，请在本地终端按以下 6 个标准步骤完成平滑升级：
 
 ### 第 1 步：备份当前分支（防意外）
 ```bash
@@ -58,7 +58,7 @@ git merge upstream/main
 *此时 Git 通常会提示 `package.json` 和 `pnpm-lock.yaml` 存在冲突。*
 
 ### 第 4 步：解决包管理器与锁文件冲突
-1. 打开 `package.json`，在末尾的冲突标记中，保留本地的 `packageManager`（例如 `pnpm@10.18.1`），删掉冲突标记：
+1. 打开 `package.json`，在末尾的冲突标记中，保留本地的 `packageManager`（例如 `pnpm@10.18.1`）以及 `tauri-plugin-mihomo-api` 的 HTTPS 依赖地址（同时核对其 commit hash 是否与上游新版本一致），删掉冲突标记：
    ```json
    "type": "module",
    "packageManager": "pnpm@10.18.1"
@@ -72,17 +72,29 @@ git merge upstream/main
    ```bash
    git add package.json pnpm-lock.yaml
    ```
-4. 提交合并：
+
+### 第 5 步：合并后必做检查（重要：避免无冲突合并导致的编译失败）
+即使 `git merge` 没有报代码冲突，上游重命名函数、调整前后端类型契约或升级 Rust 工具链仍可能导致 CI 打包失败。提交和推送前务必完成以下轻量检查：
+
+1. **对齐 CI 工具链版本**：核对上游的 `rust-toolchain.toml` 与本项目 `.github/workflows/macos-arm64.yml` 中的 `toolchain`（Rust 版本）是否一致；若上游升级了 Rust 版本，同步更新 `macos-arm64.yml`。
+2. **仅在本地做前端静态检查（不要在本地执行 Tauri / Rust 完整打包）**：
+   ```bash
+   pnpm run typecheck
+   pnpm test
+   ```
+   - `pnpm run typecheck`（`tsrs -p . --noEmit`）只需几秒即可捕获像上游重命名 API 或收紧 nullable 类型导致的定制代码报错（重点关注 `src/hooks/use-system-proxy-state.ts`、`src/pages/home.tsx`、`src/components/layout/layout-sidebar.tsx` 等定制文件）。
+   - 安装包编译打包一律交给 GitHub Actions（`.github/workflows/macos-arm64.yml`），不要在本地运行 `pnpm build` / `tauri build`。
+3. **提交合并**：
    ```bash
    git commit -m "chore: merge upstream/main vX.X.X"
    ```
-   *（提交时会自动运行 pre-commit 钩子进行国际化排版和代码校验，等待完成即可）*
+   *（提交时会自动运行 pre-commit 钩子进行代码校验，推送前会自动运行 `typecheck` 和 `knip:check`，等待完成即可）*
 
-### 第 5 步：推送到个人 GitHub 仓库
+### 第 6 步：推送到个人 GitHub 仓库并观察 Actions 构建
 ```bash
 git push origin main
 ```
-*推送完成后，刷新你的 GitHub 网页，红色冲突提示会立即消失，显示已同步到最新版本。*
+*推送完成后，GitHub Actions 会自动触发 `macOS arm64` 工作流编译并发布最新的 `.dmg` 到 `macos-arm64` rolling release。确认新版本安装验证无误后，再删除第 1 步创建的临时备份分支（`git branch -d backup-before-sync`）。*
 
 ---
 

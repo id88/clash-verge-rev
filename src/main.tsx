@@ -1,4 +1,3 @@
-import './polyfills/browser-tauri-mock'
 import './styles/globals.css'
 import './assets/styles/index.scss'
 
@@ -65,6 +64,9 @@ const initializeApp = (initialThemeMode: 'light' | 'dark') => {
 }
 
 const bootstrap = async () => {
+  if (import.meta.env.DEV) {
+    await import('./polyfills/browser-tauri-mock')
+  }
   const appDataPromise = preloadAppData()
   void preloadHomePageCards()
 
